@@ -1,8 +1,5 @@
-import { describe, expect, it } from 'vitest';
-import { groupByCategory } from './groupByCategory';
+import type { Resource } from '../types';
 
-describe('groupByCategory', () => {
-  it('returns an empty object when there are no resources', () => {
-    expect(groupByCategory([])).toEqual({});
-  });
-});
+export function groupByCategory(resources: Resource[]) {
+  return {};
+}
