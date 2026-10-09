@@ -59,4 +59,19 @@ describe('ResourceDetail', () => {
     expect(screen.getByText('Meditation')).toBeInTheDocument();
     expect(screen.getByText('15 min')).toBeInTheDocument();
   });
+
+  it('shows the resource tags', () => {
+    render(
+      <ResourceDetail
+        resource={buildResource({
+          tags: ['wellbeing', 'mindfulness', 'relaxation'],
+        })}
+        onClose={vi.fn()}
+      />,
+    );
+
+    const tags = screen.getAllByRole('listitem').map((item) => item.textContent);
+
+    expect(tags).toEqual(['wellbeing', 'mindfulness', 'relaxation']);
+  });
 });
