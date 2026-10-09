@@ -12,5 +12,11 @@ export function sortResources(
     );
   }
 
+  if (order === 'oldest') {
+    return [...resources].sort((a, b) =>
+      a.date_uploaded.localeCompare(b.date_uploaded),
+    );
+  }
+
   return resources;
 }
