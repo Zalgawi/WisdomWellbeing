@@ -1,12 +1,16 @@
 import { render, screen } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
+import userEvent from '@testing-library/user-event';
+import { describe, expect, it, vi } from 'vitest';
 import { buildResource } from '../test/buildResource';
 import { ResourceCard } from './ResourceCard';
 
 describe('ResourceCard', () => {
   it('shows the resource title as a heading', () => {
     render(
-      <ResourceCard resource={buildResource({ title: 'Mindful Moments' })} />,
+      <ResourceCard
+        resource={buildResource({ title: 'Mindful Moments' })}
+        onSelect={vi.fn()}
+      />,
     );
 
     expect(
@@ -21,6 +25,7 @@ describe('ResourceCard', () => {
           title: 'Mindful Moments',
           thumbnail: 'https://example.com/mindful.jpg',
         })}
+        onSelect={vi.fn()}
       />,
     );
 
@@ -31,7 +36,12 @@ describe('ResourceCard', () => {
   });
 
   it('shows the duration in minutes', () => {
-    render(<ResourceCard resource={buildResource({ duration: 25 })} />);
+    render(
+      <ResourceCard
+        resource={buildResource({ duration: 25 })}
+        onSelect={vi.fn()}
+      />,
+    );
 
     expect(screen.getByText('25 min')).toBeInTheDocument();
   });
@@ -42,6 +52,7 @@ describe('ResourceCard', () => {
         resource={buildResource({
           tags: ['wellbeing', 'mindfulness', 'relaxation'],
         })}
+        onSelect={vi.fn()}
       />,
     );
 
@@ -56,11 +67,24 @@ describe('ResourceCard', () => {
         resource={buildResource({
           tags: ['wellbeing', 'mindfulness', 'relaxation', 'sleep'],
         })}
+        onSelect={vi.fn()}
       />,
     );
 
     const tags = screen.getAllByRole('listitem').map((item) => item.textContent);
 
     expect(tags).toEqual(['wellbeing', 'mindfulness', 'relaxation']);
+  });
+
+  it('calls onSelect with the resource when its title is clicked', async () => {
+    const user = userEvent.setup();
+    const onSelect = vi.fn();
+    const resource = buildResource({ title: 'Mindful Moments' });
+    render(<ResourceCard resource={resource} onSelect={onSelect} />);
+
+    await user.click(screen.getByRole('button', { name: 'Mindful Moments' }));
+
+    expect(onSelect).toHaveBeenCalledTimes(1);
+    expect(onSelect).toHaveBeenCalledWith(resource);
   });
 });
