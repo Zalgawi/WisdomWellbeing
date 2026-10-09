@@ -4,7 +4,7 @@ export function filterResources(
   resources: Resource[],
   query: string,
 ): Resource[] {
-  const term = query.toLowerCase();
+  const term = query.trim().toLowerCase();
 
   return resources.filter((resource) =>
     [resource.title, ...resource.tags].some((text) =>
