@@ -11,6 +11,7 @@ export default function App({ resources }: AppProps) {
 
   return (
     <main>
+      <h1>Resource Centre</h1>
       {CATEGORIES.map((category) => {
         const group = groups[category];
 
