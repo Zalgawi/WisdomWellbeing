@@ -16,4 +16,11 @@ describe('filterResources', () => {
 
     expect(filterResources([mindful, sleep], 'sLeEp')).toEqual([sleep]);
   });
+
+  it('returns every resource when the query is empty', () => {
+    const mindful = buildResource({ id: '001', title: 'Mindful Moments' });
+    const sleep = buildResource({ id: '002', title: 'The Science of Sleep' });
+
+    expect(filterResources([mindful, sleep], '')).toEqual([mindful, sleep]);
+  });
 });
