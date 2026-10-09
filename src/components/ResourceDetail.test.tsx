@@ -30,4 +30,21 @@ describe('ResourceDetail', () => {
 
     expect(screen.getByText('10 July 2025')).toBeInTheDocument();
   });
+
+  it('shows the thumbnail image with the title as its alt text', () => {
+    render(
+      <ResourceDetail
+        resource={buildResource({
+          title: 'Mindful Moments',
+          thumbnail: 'https://example.com/mindful.jpg',
+        })}
+        onClose={vi.fn()}
+      />,
+    );
+
+    expect(screen.getByRole('img', { name: 'Mindful Moments' })).toHaveAttribute(
+      'src',
+      'https://example.com/mindful.jpg',
+    );
+  });
 });
