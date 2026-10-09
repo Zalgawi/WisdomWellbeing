@@ -10,8 +10,8 @@ export default function App({ resources }: AppProps) {
   const groups = groupByCategory(resources);
 
   return (
-    <main>
-      <h1>Resource Centre</h1>
+    <main className="page">
+      <h1 className="page-title">Resource Centre</h1>
       {CATEGORIES.map((category) => {
         const group = groups[category];
 

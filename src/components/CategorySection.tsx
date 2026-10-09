@@ -11,9 +11,9 @@ export function CategorySection({
   resources,
 }: CategorySectionProps) {
   return (
-    <section>
-      <h2>{category}</h2>
-      <div>
+    <section className="category">
+      <h2 className="category-title">{category}</h2>
+      <div className="card-grid">
         {resources.map((resource) => (
           <ResourceCard key={resource.id} resource={resource} />
         ))}

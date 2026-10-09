@@ -8,15 +8,24 @@ interface ResourceCardProps {
 
 export function ResourceCard({ resource }: ResourceCardProps) {
   return (
-    <article>
-      <img src={resource.thumbnail} alt={resource.title} />
-      <h3>{resource.title}</h3>
-      <p>{resource.duration} min</p>
-      <ul>
-        {resource.tags.slice(0, MAX_VISIBLE_TAGS).map((tag) => (
-          <li key={tag}>{tag}</li>
-        ))}
-      </ul>
+    <article className="card">
+      <img
+        className="card-image"
+        src={resource.thumbnail}
+        alt={resource.title}
+        loading="lazy"
+      />
+      <div className="card-body">
+        <h3 className="card-title">{resource.title}</h3>
+        <p className="card-duration">{resource.duration} min</p>
+        <ul className="tag-list">
+          {resource.tags.slice(0, MAX_VISIBLE_TAGS).map((tag) => (
+            <li className="tag" key={tag}>
+              {tag}
+            </li>
+          ))}
+        </ul>
+      </div>
     </article>
   );
 }
