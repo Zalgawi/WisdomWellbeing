@@ -1,5 +1,10 @@
 import type { Resource } from '../types';
 
+const dateFormatter = new Intl.DateTimeFormat('en-GB', {
+  dateStyle: 'long',
+  timeZone: 'UTC',
+});
+
 interface ResourceDetailProps {
   resource: Resource;
   onClose: () => void;
@@ -10,6 +15,12 @@ export function ResourceDetail({ resource }: ResourceDetailProps) {
     <div role="dialog" aria-modal="true" aria-labelledby="resource-detail-title">
       <h2 id="resource-detail-title">{resource.title}</h2>
       <p>{resource.description}</p>
+      <p>
+        Uploaded{' '}
+        <time dateTime={resource.date_uploaded}>
+          {dateFormatter.format(new Date(resource.date_uploaded))}
+        </time>
+      </p>
     </div>
   );
 }
