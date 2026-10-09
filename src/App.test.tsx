@@ -59,4 +59,14 @@ describe('App', () => {
       screen.getByRole('dialog', { name: 'Mindful Moments' }),
     ).toHaveTextContent('A calming podcast.');
   });
+
+  it('closes the dialog when the close button is clicked', async () => {
+    const user = userEvent.setup();
+    render(<App resources={[buildResource({ title: 'Mindful Moments' })]} />);
+
+    await user.click(screen.getByRole('button', { name: 'Mindful Moments' }));
+    await user.click(screen.getByRole('button', { name: 'Close' }));
+
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+  });
 });
