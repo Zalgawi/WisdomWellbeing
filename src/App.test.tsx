@@ -80,6 +80,17 @@ describe('App', () => {
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 
+  it('returns focus to the card that opened the dialog when it closes', async () => {
+    const user = userEvent.setup();
+    render(<App resources={[buildResource({ title: 'Mindful Moments' })]} />);
+    const card = screen.getByRole('button', { name: 'Mindful Moments' });
+
+    await user.click(card);
+    await user.click(screen.getByRole('button', { name: 'Close' }));
+
+    expect(card).toHaveFocus();
+  });
+
   it('narrows the visible resources as the user types in the search box', async () => {
     const user = userEvent.setup();
     render(
