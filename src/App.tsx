@@ -28,7 +28,10 @@ export default function App({ resources }: AppProps) {
         ) : null;
       })}
       {selected && (
-        <ResourceDetail resource={selected} onClose={() => undefined} />
+        <ResourceDetail
+          resource={selected}
+          onClose={() => setSelected(null)}
+        />
       )}
     </main>
   );
