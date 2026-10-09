@@ -2,21 +2,19 @@ import type { Resource } from '../types';
 
 export type SortOrder = 'default' | 'newest' | 'oldest';
 
+const byDateAscending = (a: Resource, b: Resource) =>
+  a.date_uploaded.localeCompare(b.date_uploaded);
+
 export function sortResources(
   resources: Resource[],
   order: SortOrder,
 ): Resource[] {
-  if (order === 'newest') {
-    return [...resources].sort((a, b) =>
-      b.date_uploaded.localeCompare(a.date_uploaded),
-    );
+  switch (order) {
+    case 'newest':
+      return [...resources].sort((a, b) => byDateAscending(b, a));
+    case 'oldest':
+      return [...resources].sort(byDateAscending);
+    default:
+      return resources;
   }
-
-  if (order === 'oldest') {
-    return [...resources].sort((a, b) =>
-      a.date_uploaded.localeCompare(b.date_uploaded),
-    );
-  }
-
-  return resources;
 }
