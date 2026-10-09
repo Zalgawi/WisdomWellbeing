@@ -18,6 +18,11 @@ export function ResourceDetail({ resource }: ResourceDetailProps) {
       <h2 id="resource-detail-title">{resource.title}</h2>
       <p>{resource.duration} min</p>
       <p>{resource.description}</p>
+      <ul>
+        {resource.tags.map((tag) => (
+          <li key={tag}>{tag}</li>
+        ))}
+      </ul>
       <p>
         Uploaded{' '}
         <time dateTime={resource.date_uploaded}>
