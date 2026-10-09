@@ -13,4 +13,20 @@ describe('ResourceCard', () => {
       screen.getByRole('heading', { name: 'Mindful Moments' }),
     ).toBeInTheDocument();
   });
+
+  it('shows the thumbnail image with the title as its alt text', () => {
+    render(
+      <ResourceCard
+        resource={buildResource({
+          title: 'Mindful Moments',
+          thumbnail: 'https://example.com/mindful.jpg',
+        })}
+      />,
+    );
+
+    expect(screen.getByRole('img', { name: 'Mindful Moments' })).toHaveAttribute(
+      'src',
+      'https://example.com/mindful.jpg',
+    );
+  });
 });
