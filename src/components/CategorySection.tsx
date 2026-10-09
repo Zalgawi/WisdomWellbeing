@@ -4,11 +4,13 @@ import { ResourceCard } from './ResourceCard';
 interface CategorySectionProps {
   category: Category;
   resources: Resource[];
+  onSelect: (resource: Resource) => void;
 }
 
 export function CategorySection({
   category,
   resources,
+  onSelect,
 }: CategorySectionProps) {
   return (
     <section className="mb-12">
@@ -17,7 +19,7 @@ export function CategorySection({
       </h2>
       <div className="grid grid-cols-[repeat(auto-fill,minmax(16rem,1fr))] gap-5">
         {resources.map((resource) => (
-          <ResourceCard key={resource.id} resource={resource} />
+          <ResourceCard key={resource.id} resource={resource} onSelect={onSelect} />
         ))}
       </div>
     </section>
