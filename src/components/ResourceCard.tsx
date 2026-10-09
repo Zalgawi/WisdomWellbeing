@@ -9,6 +9,7 @@ export function ResourceCard({ resource }: ResourceCardProps) {
     <article>
       <img src={resource.thumbnail} alt={resource.title} />
       <h3>{resource.title}</h3>
+      <p>{resource.duration} min</p>
     </article>
   );
 }
