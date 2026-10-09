@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 import { buildResource } from '../test/buildResource';
 import { ResourceDetail } from './ResourceDetail';
@@ -73,5 +74,15 @@ describe('ResourceDetail', () => {
     const tags = screen.getAllByRole('listitem').map((item) => item.textContent);
 
     expect(tags).toEqual(['wellbeing', 'mindfulness', 'relaxation']);
+  });
+
+  it('calls onClose when the close button is clicked', async () => {
+    const user = userEvent.setup();
+    const onClose = vi.fn();
+    render(<ResourceDetail resource={buildResource()} onClose={onClose} />);
+
+    await user.click(screen.getByRole('button', { name: 'Close' }));
+
+    expect(onClose).toHaveBeenCalledTimes(1);
   });
 });
