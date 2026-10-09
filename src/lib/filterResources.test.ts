@@ -9,4 +9,11 @@ describe('filterResources', () => {
 
     expect(filterResources([mindful, sleep], 'Sleep')).toEqual([sleep]);
   });
+
+  it('ignores letter case when matching the title', () => {
+    const mindful = buildResource({ id: '001', title: 'Mindful Moments' });
+    const sleep = buildResource({ id: '002', title: 'The Science of Sleep' });
+
+    expect(filterResources([mindful, sleep], 'sLeEp')).toEqual([sleep]);
+  });
 });
