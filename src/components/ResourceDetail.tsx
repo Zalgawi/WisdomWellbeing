@@ -15,7 +15,14 @@ export function ResourceDetail({ resource, onClose }: ResourceDetailProps) {
   const closeButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
+    const previouslyFocused = document.activeElement;
     closeButtonRef.current?.focus();
+
+    return () => {
+      if (previouslyFocused instanceof HTMLElement) {
+        previouslyFocused.focus();
+      }
+    };
   }, []);
 
   useEffect(() => {
