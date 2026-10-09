@@ -12,7 +12,9 @@ interface AppProps {
 export default function App({ resources }: AppProps) {
   const [query, setQuery] = useState('');
   const [selected, setSelected] = useState<Resource | null>(null);
-  const groups = groupByCategory(filterResources(resources, query));
+  const visibleResources = filterResources(resources, query);
+  const groups = groupByCategory(visibleResources);
+  const hasNoMatches = query.trim() !== '' && visibleResources.length === 0;
 
   return (
     <main className="mx-auto max-w-6xl px-4 pt-8 pb-16">
@@ -33,6 +35,11 @@ export default function App({ resources }: AppProps) {
           className="w-full max-w-md rounded-lg border border-slate-300 bg-white px-3 py-2"
         />
       </div>
+      {hasNoMatches && (
+        <p role="status" className="text-slate-500">
+          No resources match your search.
+        </p>
+      )}
       {CATEGORIES.map((category) => {
         const group = groups[category];
 
