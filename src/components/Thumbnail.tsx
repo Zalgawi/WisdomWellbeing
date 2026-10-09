@@ -12,7 +12,7 @@ export function Thumbnail({ src, alt, className = '' }: ThumbnailProps) {
   if (failedSrc === src) {
     return (
       <div
-        className={`${className} flex items-center justify-center text-sm text-slate-500`}
+        className={`${className} flex items-center justify-center text-sm text-slate-600`}
       >
         Image unavailable
       </div>
