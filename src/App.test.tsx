@@ -107,4 +107,24 @@ describe('App', () => {
       screen.queryByRole('button', { name: 'Mindful Moments' }),
     ).not.toBeInTheDocument();
   });
+
+  it('shows a message when no resources match the search', async () => {
+    const user = userEvent.setup();
+    render(<App resources={[buildResource({ title: 'Mindful Moments' })]} />);
+
+    await user.type(
+      screen.getByRole('searchbox', { name: 'Search resources' }),
+      'zzz',
+    );
+
+    expect(screen.getByRole('status')).toHaveTextContent(
+      'No resources match your search.',
+    );
+  });
+
+  it('shows no message when nothing has been searched', () => {
+    render(<App resources={[]} />);
+
+    expect(screen.queryByRole('status')).not.toBeInTheDocument();
+  });
 });
