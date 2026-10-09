@@ -8,19 +8,22 @@ interface ResourceCardProps {
 
 export function ResourceCard({ resource }: ResourceCardProps) {
   return (
-    <article className="card">
+    <article className="flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white">
       <img
-        className="card-image"
+        className="block aspect-video w-full bg-cyan-50 object-cover"
         src={resource.thumbnail}
         alt={resource.title}
         loading="lazy"
       />
-      <div className="card-body">
-        <h3 className="card-title">{resource.title}</h3>
-        <p className="card-duration">{resource.duration} min</p>
-        <ul className="tag-list">
+      <div className="flex flex-col gap-2 p-4">
+        <h3 className="text-lg font-semibold">{resource.title}</h3>
+        <p className="text-sm text-slate-500">{resource.duration} min</p>
+        <ul className="flex flex-wrap gap-2">
           {resource.tags.slice(0, MAX_VISIBLE_TAGS).map((tag) => (
-            <li className="tag" key={tag}>
+            <li
+              className="rounded-full bg-cyan-50 px-2.5 py-0.5 text-xs"
+              key={tag}
+            >
               {tag}
             </li>
           ))}
