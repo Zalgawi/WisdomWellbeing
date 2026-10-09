@@ -69,4 +69,14 @@ describe('App', () => {
 
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
+
+  it('closes the dialog when Escape is pressed', async () => {
+    const user = userEvent.setup();
+    render(<App resources={[buildResource({ title: 'Mindful Moments' })]} />);
+
+    await user.click(screen.getByRole('button', { name: 'Mindful Moments' }));
+    await user.keyboard('{Escape}');
+
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+  });
 });
