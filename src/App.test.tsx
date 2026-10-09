@@ -79,4 +79,32 @@ describe('App', () => {
 
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
+
+  it('narrows the visible resources as the user types in the search box', async () => {
+    const user = userEvent.setup();
+    render(
+      <App
+        resources={[
+          buildResource({ id: '001', title: 'Mindful Moments' }),
+          buildResource({ id: '002', title: 'The Science of Sleep' }),
+        ]}
+      />,
+    );
+
+    expect(
+      screen.getByRole('button', { name: 'Mindful Moments' }),
+    ).toBeInTheDocument();
+
+    await user.type(
+      screen.getByRole('searchbox', { name: 'Search resources' }),
+      'sleep',
+    );
+
+    expect(
+      screen.getByRole('button', { name: 'The Science of Sleep' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: 'Mindful Moments' }),
+    ).not.toBeInTheDocument();
+  });
 });
