@@ -4,9 +4,10 @@ const MAX_VISIBLE_TAGS = 3;
 
 interface ResourceCardProps {
   resource: Resource;
+  onSelect: (resource: Resource) => void;
 }
 
-export function ResourceCard({ resource }: ResourceCardProps) {
+export function ResourceCard({ resource, onSelect }: ResourceCardProps) {
   return (
     <article className="flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white">
       <img
@@ -16,7 +17,11 @@ export function ResourceCard({ resource }: ResourceCardProps) {
         loading="lazy"
       />
       <div className="flex flex-col gap-2 p-4">
-        <h3 className="text-lg font-semibold">{resource.title}</h3>
+        <h3 className="text-lg font-semibold">
+          <button type="button" onClick={() => onSelect(resource)}>
+            {resource.title}
+          </button>
+        </h3>
         <p className="text-sm text-slate-500">{resource.duration} min</p>
         <ul className="flex flex-wrap gap-2">
           {resource.tags.slice(0, MAX_VISIBLE_TAGS).map((tag) => (
