@@ -85,4 +85,14 @@ describe('ResourceDetail', () => {
 
     expect(onClose).toHaveBeenCalledTimes(1);
   });
+
+  it('calls onClose when the Escape key is pressed', async () => {
+    const user = userEvent.setup();
+    const onClose = vi.fn();
+    render(<ResourceDetail resource={buildResource()} onClose={onClose} />);
+
+    await user.keyboard('{Escape}');
+
+    expect(onClose).toHaveBeenCalledTimes(1);
+  });
 });
