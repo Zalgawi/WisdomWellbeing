@@ -29,4 +29,10 @@ describe('ResourceCard', () => {
       'https://example.com/mindful.jpg',
     );
   });
+
+  it('shows the duration in minutes', () => {
+    render(<ResourceCard resource={buildResource({ duration: 25 })} />);
+
+    expect(screen.getByText('25 min')).toBeInTheDocument();
+  });
 });
