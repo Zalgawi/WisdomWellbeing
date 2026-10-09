@@ -47,4 +47,16 @@ describe('ResourceDetail', () => {
       'https://example.com/mindful.jpg',
     );
   });
+
+  it('shows the category and the duration in minutes', () => {
+    render(
+      <ResourceDetail
+        resource={buildResource({ category: 'Meditation', duration: 15 })}
+        onClose={vi.fn()}
+      />,
+    );
+
+    expect(screen.getByText('Meditation')).toBeInTheDocument();
+    expect(screen.getByText('15 min')).toBeInTheDocument();
+  });
 });
