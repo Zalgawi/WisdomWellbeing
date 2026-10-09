@@ -138,4 +138,60 @@ describe('App', () => {
 
     expect(screen.queryByRole('status')).not.toBeInTheDocument();
   });
+
+  it('shows the cards in their original order by default', () => {
+    render(
+      <App
+        resources={[
+          buildResource({
+            id: '001',
+            title: 'Older Podcast',
+            date_uploaded: '2025-06-01',
+          }),
+          buildResource({
+            id: '002',
+            title: 'Newer Podcast',
+            date_uploaded: '2025-08-01',
+          }),
+        ]}
+      />,
+    );
+
+    const titles = screen
+      .getAllByRole('heading', { level: 3 })
+      .map((heading) => heading.textContent);
+
+    expect(titles).toEqual(['Older Podcast', 'Newer Podcast']);
+  });
+
+  it('sorts the cards in each category by date when a sort order is chosen', async () => {
+    const user = userEvent.setup();
+    render(
+      <App
+        resources={[
+          buildResource({
+            id: '001',
+            title: 'Older Podcast',
+            date_uploaded: '2025-06-01',
+          }),
+          buildResource({
+            id: '002',
+            title: 'Newer Podcast',
+            date_uploaded: '2025-08-01',
+          }),
+        ]}
+      />,
+    );
+
+    await user.selectOptions(
+      screen.getByRole('combobox', { name: 'Sort by date' }),
+      'Newest first',
+    );
+
+    const titles = screen
+      .getAllByRole('heading', { level: 3 })
+      .map((heading) => heading.textContent);
+
+    expect(titles).toEqual(['Newer Podcast', 'Older Podcast']);
+  });
 });
