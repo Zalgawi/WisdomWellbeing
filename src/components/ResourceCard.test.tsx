@@ -49,4 +49,18 @@ describe('ResourceCard', () => {
 
     expect(tags).toEqual(['wellbeing', 'mindfulness', 'relaxation']);
   });
+
+  it('shows no more than three tags', () => {
+    render(
+      <ResourceCard
+        resource={buildResource({
+          tags: ['wellbeing', 'mindfulness', 'relaxation', 'sleep'],
+        })}
+      />,
+    );
+
+    const tags = screen.getAllByRole('listitem').map((item) => item.textContent);
+
+    expect(tags).toEqual(['wellbeing', 'mindfulness', 'relaxation']);
+  });
 });
