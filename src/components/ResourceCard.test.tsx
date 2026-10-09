@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 import { buildResource } from '../test/buildResource';
@@ -33,6 +33,19 @@ describe('ResourceCard', () => {
       'src',
       'https://example.com/mindful.jpg',
     );
+  });
+
+  it('shows a placeholder when the thumbnail fails to load', () => {
+    render(
+      <ResourceCard
+        resource={buildResource({ title: 'Mindful Moments' })}
+        onSelect={vi.fn()}
+      />,
+    );
+
+    fireEvent.error(screen.getByRole('img', { name: 'Mindful Moments' }));
+
+    expect(screen.getByText('Image unavailable')).toBeInTheDocument();
   });
 
   it('shows the duration in minutes', () => {
