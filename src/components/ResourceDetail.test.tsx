@@ -19,4 +19,15 @@ describe('ResourceDetail', () => {
 
     expect(dialog).toHaveTextContent('A calming podcast.');
   });
+
+  it('shows the upload date in a readable format', () => {
+    render(
+      <ResourceDetail
+        resource={buildResource({ date_uploaded: '2025-07-10' })}
+        onClose={vi.fn()}
+      />,
+    );
+
+    expect(screen.getByText('10 July 2025')).toBeInTheDocument();
+  });
 });
