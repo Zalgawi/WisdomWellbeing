@@ -38,4 +38,11 @@ describe('filterResources', () => {
 
     expect(filterResources([weekly, sleep], 'Mindfulness')).toEqual([weekly]);
   });
+
+  it('ignores spaces around the query', () => {
+    const mindful = buildResource({ id: '001', title: 'Mindful Moments' });
+    const sleep = buildResource({ id: '002', title: 'The Science of Sleep' });
+
+    expect(filterResources([mindful, sleep], '  sleep  ')).toEqual([sleep]);
+  });
 });
