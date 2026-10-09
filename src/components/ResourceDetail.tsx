@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import type { Resource } from '../types';
+import { Thumbnail } from './Thumbnail';
 
 const dateFormatter = new Intl.DateTimeFormat('en-GB', {
   dateStyle: 'long',
@@ -53,8 +54,8 @@ export function ResourceDetail({ resource, onClose }: ResourceDetailProps) {
         >
           Close
         </button>
-        <img
-          className="block aspect-video w-full bg-cyan-50 object-cover"
+        <Thumbnail
+          className="aspect-video w-full bg-cyan-50 object-cover"
           src={resource.thumbnail}
           alt={resource.title}
         />

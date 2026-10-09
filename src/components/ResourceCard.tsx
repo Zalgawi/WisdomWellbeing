@@ -1,4 +1,5 @@
 import type { Resource } from '../types';
+import { Thumbnail } from './Thumbnail';
 
 const MAX_VISIBLE_TAGS = 3;
 
@@ -10,11 +11,10 @@ interface ResourceCardProps {
 export function ResourceCard({ resource, onSelect }: ResourceCardProps) {
   return (
     <article className="relative flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white transition-shadow hover:shadow-md has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-cyan-600">
-      <img
-        className="block aspect-video w-full bg-cyan-50 object-cover"
+      <Thumbnail
+        className="aspect-video w-full bg-cyan-50 object-cover"
         src={resource.thumbnail}
         alt={resource.title}
-        loading="lazy"
       />
       <div className="flex flex-col gap-2 p-4">
         <h3 className="text-lg font-semibold">
