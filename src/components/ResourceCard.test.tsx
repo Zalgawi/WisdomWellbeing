@@ -35,4 +35,18 @@ describe('ResourceCard', () => {
 
     expect(screen.getByText('25 min')).toBeInTheDocument();
   });
+
+  it('shows the resource tags', () => {
+    render(
+      <ResourceCard
+        resource={buildResource({
+          tags: ['wellbeing', 'mindfulness', 'relaxation'],
+        })}
+      />,
+    );
+
+    const tags = screen.getAllByRole('listitem').map((item) => item.textContent);
+
+    expect(tags).toEqual(['wellbeing', 'mindfulness', 'relaxation']);
+  });
 });
