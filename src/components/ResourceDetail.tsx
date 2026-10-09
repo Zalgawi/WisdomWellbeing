@@ -13,6 +13,7 @@ interface ResourceDetailProps {
 export function ResourceDetail({ resource }: ResourceDetailProps) {
   return (
     <div role="dialog" aria-modal="true" aria-labelledby="resource-detail-title">
+      <img src={resource.thumbnail} alt={resource.title} />
       <h2 id="resource-detail-title">{resource.title}</h2>
       <p>{resource.description}</p>
       <p>
