@@ -23,4 +23,19 @@ describe('filterResources', () => {
 
     expect(filterResources([mindful, sleep], '')).toEqual([mindful, sleep]);
   });
+
+  it('matches resources by tag, ignoring letter case', () => {
+    const weekly = buildResource({
+      id: '003',
+      title: 'Wellness Weekly',
+      tags: ['community', 'tips', 'mindfulness'],
+    });
+    const sleep = buildResource({
+      id: '002',
+      title: 'The Science of Sleep',
+      tags: ['sleep', 'science'],
+    });
+
+    expect(filterResources([weekly, sleep], 'Mindfulness')).toEqual([weekly]);
+  });
 });
