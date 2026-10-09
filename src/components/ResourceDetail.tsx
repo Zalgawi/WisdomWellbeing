@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import type { Resource } from '../types';
 
 const dateFormatter = new Intl.DateTimeFormat('en-GB', {
@@ -11,6 +12,18 @@ interface ResourceDetailProps {
 }
 
 export function ResourceDetail({ resource, onClose }: ResourceDetailProps) {
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
+
   return (
     <div role="dialog" aria-modal="true" aria-labelledby="resource-detail-title">
       <button type="button" onClick={onClose}>
