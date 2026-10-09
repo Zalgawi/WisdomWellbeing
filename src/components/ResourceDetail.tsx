@@ -10,9 +10,12 @@ interface ResourceDetailProps {
   onClose: () => void;
 }
 
-export function ResourceDetail({ resource }: ResourceDetailProps) {
+export function ResourceDetail({ resource, onClose }: ResourceDetailProps) {
   return (
     <div role="dialog" aria-modal="true" aria-labelledby="resource-detail-title">
+      <button type="button" onClick={onClose}>
+        Close
+      </button>
       <img src={resource.thumbnail} alt={resource.title} />
       <p>{resource.category}</p>
       <h2 id="resource-detail-title">{resource.title}</h2>
