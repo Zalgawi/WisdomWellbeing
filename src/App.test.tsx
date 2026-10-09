@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { describe, expect, it } from 'vitest';
 import App from './App';
 import { buildResource } from './test/buildResource';
@@ -35,5 +36,27 @@ describe('App', () => {
       .map((heading) => heading.textContent);
 
     expect(headings).toEqual(['Podcasts', 'Articles']);
+  });
+
+  it('opens a dialog with the resource details when a card is clicked', async () => {
+    const user = userEvent.setup();
+    render(
+      <App
+        resources={[
+          buildResource({
+            title: 'Mindful Moments',
+            description: 'A calming podcast.',
+          }),
+        ]}
+      />,
+    );
+
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', { name: 'Mindful Moments' }));
+
+    expect(
+      screen.getByRole('dialog', { name: 'Mindful Moments' }),
+    ).toHaveTextContent('A calming podcast.');
   });
 });
