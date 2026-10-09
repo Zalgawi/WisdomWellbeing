@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import type { Resource } from '../types';
 
 const dateFormatter = new Intl.DateTimeFormat('en-GB', {
@@ -12,6 +12,12 @@ interface ResourceDetailProps {
 }
 
 export function ResourceDetail({ resource, onClose }: ResourceDetailProps) {
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    closeButtonRef.current?.focus();
+  }, []);
+
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
@@ -33,6 +39,7 @@ export function ResourceDetail({ resource, onClose }: ResourceDetailProps) {
         className="relative max-h-full w-full max-w-lg overflow-y-auto rounded-xl bg-white shadow-xl"
       >
         <button
+          ref={closeButtonRef}
           type="button"
           onClick={onClose}
           className="absolute top-3 right-3 cursor-pointer rounded-full bg-white/90 px-3 py-1 text-sm font-medium shadow hover:bg-white focus-visible:outline-2 focus-visible:outline-cyan-600"
