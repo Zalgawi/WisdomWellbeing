@@ -7,6 +7,8 @@ export function filterResources(
   const term = query.toLowerCase();
 
   return resources.filter((resource) =>
-    resource.title.toLowerCase().includes(term),
+    [resource.title, ...resource.tags].some((text) =>
+      text.toLowerCase().includes(term),
+    ),
   );
 }
