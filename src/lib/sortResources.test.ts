@@ -16,4 +16,21 @@ describe('sortResources', () => {
 
     expect(sortResources([newer, older], 'oldest')).toEqual([older, newer]);
   });
+
+  it('keeps the original order for the default order', () => {
+    const older = buildResource({ id: '001', date_uploaded: '2025-06-22' });
+    const newer = buildResource({ id: '002', date_uploaded: '2025-08-01' });
+
+    expect(sortResources([newer, older], 'default')).toEqual([newer, older]);
+  });
+
+  it('does not modify the array it is given', () => {
+    const older = buildResource({ id: '001', date_uploaded: '2025-06-22' });
+    const newer = buildResource({ id: '002', date_uploaded: '2025-08-01' });
+    const resources = [older, newer];
+
+    sortResources(resources, 'newest');
+
+    expect(resources).toEqual([older, newer]);
+  });
 });
