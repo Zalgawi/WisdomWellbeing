@@ -1,79 +1,89 @@
-# React + TypeScript + Vite + Tailwind
+# Resource Centre
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A single page application for the HA | Wisdom Wellbeing Resource Centre. It displays wellbeing resources (podcasts, articles, newsletters, recipes, fitness and meditation) grouped by category, with search, date sorting and a details view.
 
-Currently, two official plugins are available:
+Built with React, TypeScript, Vite and Tailwind CSS, and developed test-first with Vitest and React Testing Library.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Getting started
 
-## Tailwind
-
-Tailwind is used for styling because I'm already familiar with it, which let me spend the time on behaviour and tests. The tests query by role and text rather than class names, so the styling approach could change without touching them.
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+git clone https://github.com/Zalgawi/WisdomWellbeing.git
+cd WisdomWellbeing
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+Then open the URL Vite prints (usually http://localhost:5173).
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+| Command | What it does |
+| --- | --- |
+| `npm run dev` | Starts the development server |
+| `npm test` | Runs the tests in watch mode |
+| `npm run test:run` | Runs the tests once |
+| `npm run lint` | Runs ESLint |
+| `npm run build` | Type-checks with `tsc` and builds for production |
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## What is built
 
+| Requirement from the brief | Status | Where to look |
+| --- | --- | --- |
+| Resources grouped by category on first load | Done | `App.tsx`, `lib/groupByCategory.ts` |
+| Each resource belongs to exactly one of the six categories | Done | `types.ts` |
+| Card shows title, thumbnail, no more than 3 tags, and time in minutes | Done | `components/ResourceCard.tsx` |
+| Optional: show all resource data (including description and date uploaded) on click | Done | `components/ResourceDetail.tsx` |
+| Optional: filter by title/tags | Done | `lib/filterResources.ts`, search box in `App.tsx` |
+| Optional: sort by category/date | Done (see [interpretation](#assumptions-and-interpretations)) | `lib/sortResources.ts`, sort control in `App.tsx` |
+| Mock data instead of an API | Done | `data/resources.ts` |
+
+### Behaviour in detail
+
+- **Grouping.** Sections always appear in the order given in the brief (Podcasts, Articles, Newsletters, Recipes, Fitness, Meditation), regardless of the order of the data. A category with no matching resources is not shown.
+- **Cards.** Show the title, thumbnail, duration and at most three tags. The whole card is clickable.
+- **Details dialog.** Shows the thumbnail, category, title, duration, description, every tag and the upload date (formatted as, for example, "10 July 2025"). It closes with the Close button or the Escape key.
+- **Search.** Matches the title or any tag, ignores letter case and surrounding spaces, and allows partial matches (`mind` finds `mindfulness`). An empty search shows everything, and a search with no matches shows a message.
+- **Sort.** A "Sort by date" control with three options: default order, newest first and oldest first. Sorting applies within each category.
+- **Broken thumbnails.** If an image fails to load, a placeholder with the same dimensions is shown, so the layout does not jump.
+
+## Testing
+
+Tests use Vitest and React Testing Library, with `user-event` for interactions.
+
+- **Query by role and accessible name**, as a user or screen reader would, rather than by class or test ID. This tests behaviour and keeps tests independent of styling.
+- **Unit tests** cover the pure functions and each component in isolation.
+- **Integration-style tests** in `App.test.tsx` cover the connections between components: opening and closing the dialog, searching, sorting and focus return.
+- **Test data** comes from a small `buildResource` builder, so each test only states the fields it cares about.
+
+```bash
+npm run test:run
 ```
+
+## Data
+
+The first six resources are the example data from the brief. I added eighteen more (four per category) so each category row has enough cards to scroll. Their thumbnails are `picsum.photos` placeholders, so the images are random photos rather than wellbeing-themed ones. One resource ("Understanding Burnout") has four tags on purpose, so the three-tag limit on cards is visible in the real UI.
+
+
+## Project structure
+
+```text
+src/
+  App.tsx                        page: search, sort, grouped sections, dialog state
+  main.tsx                       entry point; the only place the mock data is imported
+  types.ts                       CATEGORIES, Category and Resource types
+  data/
+    resources.ts                 typed mock data
+  lib/
+    groupByCategory.ts           groups resources by category
+    filterResources.ts           title/tag search rules
+    sortResources.ts             date sorting
+    categoryStyles.ts            per-category accent colours
+  components/
+    CategorySection.tsx          a category heading with its row of cards
+    ResourceCard.tsx             a single resource card
+    ResourceDetail.tsx           the details dialog
+    Thumbnail.tsx                image with a fallback placeholder
+  test/
+    buildResource.ts             test data builder
+    setup.ts                     test set-up (jest-dom matchers, cleanup)
+```
+
+Each `lib` function and component has a matching `*.test.ts(x)` file next to it.
